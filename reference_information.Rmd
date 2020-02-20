@@ -16,7 +16,7 @@ library(raster)
 
 ```
 
-##### Useful website links:
+##### I. Useful website links:
 
 1. Geocomputation with R - chapter 8: Making maps with R
 
@@ -36,7 +36,7 @@ https://tlorusso.github.io/geodata_workshop/tmap_package
 
 
 
-#### Combine multiple polygon layers in one interactive map
+#### II. Combine multiple polygon layers in one interactive map
 
 ```{r}
 data(World)
