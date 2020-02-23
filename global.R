@@ -8,6 +8,7 @@ library(janitor)
 library(paletteer)
 library(raster)
 library(sf)
+library(tmap)
 
 
 
@@ -25,16 +26,16 @@ nps_ca <- nps %>%
 
 nps_ca_five <- nps_ca %>% 
   filter(unit_name %in% c("Death Valley National Park", "Joshua Tree National Park", "Yosemite National Park", "Channel Islands National Park", "Sequoia National Park")) %>% 
-  select(unit_name)
+  dplyr::select(unit_name)
 
-plot(nps_ca_five)
+#plot(nps_ca_five)
 
 # Read in park data
 
 # Channel islands
 
 channel_islands <- read_csv(here::here("data", "Animals", "channel_islands.csv")) %>% 
-  select(latitude, longitude, common_name, iconic_taxon_name) %>% 
+  dplyr::select(latitude, longitude, common_name, iconic_taxon_name) %>% 
   mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
   filter(!iconic_taxon_name %in% c("Actinopterygii", "Animalia"))
 
@@ -46,7 +47,7 @@ channel_islands_sf <- st_as_sf(channel_islands,
 # Death Valley
 
 death_valley <- read_csv(here::here("data", "Animals", "death_valley.csv")) %>% 
-  select(latitude, longitude, common_name, iconic_taxon_name) %>% 
+  dplyr::select(latitude, longitude, common_name, iconic_taxon_name) %>% 
   filter(!iconic_taxon_name == "Animalia")
 
 death_valley_sf <- st_as_sf(death_valley,
@@ -56,7 +57,7 @@ death_valley_sf <- st_as_sf(death_valley,
 # Joshua Tree
 
 joshua_tree <- read_csv(here::here("data", "Animals", "joshua_tree.csv")) %>% 
-  select(latitude, longitude, common_name, iconic_taxon_name) %>% 
+  dplyr::select(latitude, longitude, common_name, iconic_taxon_name) %>% 
   filter(!iconic_taxon_name %in% c("Animalia", "Plantae"))
 
 joshua_tree_sf <- st_as_sf(joshua_tree,
