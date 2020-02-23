@@ -62,3 +62,27 @@ joshua_tree <- read_csv(here::here("data", "Animals", "joshua_tree.csv")) %>%
 joshua_tree_sf <- st_as_sf(joshua_tree,
                            coords = c("longitude", "latitude"),
                            crs = 4326)
+# Yosemite
+
+yosemite <- read.csv(here("data", "Animals", "yosemite.csv")) %>% 
+  clean_names()
+
+yosemite_clean <- yosemite %>% 
+  select(longitude, latitude, common_name, iconic_taxon_name) %>% 
+  mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
+  filter(iconic_taxon_name != "Animalia")
+
+yosemite_sf <- st_as_sf(yosemite_clean, coords = c("longitude", "latitude"),
+                        crs = 4326)
+
+# Sequoia
+
+sequoia <- read.csv(here("data", "Animals", "sequoia.csv")) %>% 
+  clean_names()
+
+sequoia_clean <- sequoia %>% 
+  select(longitude, latitude, common_name, iconic_taxon_name) %>% 
+  mutate(iconic_taxon_name = as.character(iconic_taxon_name))
+
+sequoia_sf <- st_as_sf(sequoia_clean, coords = c("longitude", "latitude"),
+                       crs = 4326)

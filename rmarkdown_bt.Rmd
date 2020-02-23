@@ -1,0 +1,56 @@
+---
+title: "markdown_bt"
+author: "Benson Truong"
+date: "2/22/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Attach Packages
+library(tidyverse)
+library(here)
+library(janitor)
+library(sf)
+```
+
+### Yosemite
+```{r}
+# Read in data
+yosemite <- read.csv(here("data", "Animals", "yosemite.csv")) %>% 
+  clean_names()
+
+# Select Columns
+yosemite_clean <- yosemite %>% 
+  select(longitude, latitude, common_name, iconic_taxon_name) %>% 
+  mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
+  filter(iconic_taxon_name != "Animalia")
+
+# Convert into spatial data
+yosemite_sf <- st_as_sf(yosemite_clean, coords = c("longitude", "latitude"),
+                        crs = 4326)
+
+# plot(yosemite_sf)
+```
+
+### Sequoia
+```{r}
+# Read in data
+sequoia <- read.csv(here("data", "Animals", "sequoia.csv")) %>% 
+  clean_names()
+
+# Select Columns
+sequoia_clean <- sequoia %>% 
+  select(longitude, latitude, common_name, iconic_taxon_name) %>% 
+  mutate(iconic_taxon_name = as.character(iconic_taxon_name))
+
+# Convert into spatial data
+sequoia_sf <- st_as_sf(sequoia_clean, coords = c("longitude", "latitude"),
+                        crs = 4326)
+
+plot(sequoia_sf)
+```
+
