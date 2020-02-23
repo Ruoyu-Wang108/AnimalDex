@@ -69,7 +69,7 @@ yosemite <- read.csv(here("data", "Animals", "yosemite.csv")) %>%
   clean_names()
 
 yosemite_clean <- yosemite %>% 
-  select(longitude, latitude, common_name, iconic_taxon_name) %>% 
+  dplyr::select(longitude, latitude, common_name, iconic_taxon_name) %>% 
   mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
   filter(iconic_taxon_name != "Animalia")
 
@@ -82,7 +82,7 @@ sequoia <- read.csv(here("data", "Animals", "sequoia.csv")) %>%
   clean_names()
 
 sequoia_clean <- sequoia %>% 
-  select(longitude, latitude, common_name, iconic_taxon_name) %>% 
+  dplyr::select(longitude, latitude, common_name, iconic_taxon_name) %>% 
   mutate(iconic_taxon_name = as.character(iconic_taxon_name))
 
 sequoia_sf <- st_as_sf(sequoia_clean, coords = c("longitude", "latitude"),
