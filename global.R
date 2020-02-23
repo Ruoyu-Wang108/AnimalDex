@@ -37,7 +37,8 @@ nps_ca_five <- nps_ca %>%
 channel_islands <- read_csv(here::here("data", "Animals", "channel_islands.csv")) %>% 
   dplyr::select(latitude, longitude, common_name, iconic_taxon_name) %>% 
   mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
-  filter(!iconic_taxon_name %in% c("Actinopterygii", "Animalia"))
+  filter(!iconic_taxon_name %in% c("Actinopterygii", "Animalia")) %>% 
+  mutate(park = "Channel Islands National Park")
 
 channel_islands_sf <- st_as_sf(channel_islands, 
                                coords = c("longitude", "latitude"), 
@@ -48,7 +49,8 @@ channel_islands_sf <- st_as_sf(channel_islands,
 
 death_valley <- read_csv(here::here("data", "Animals", "death_valley.csv")) %>% 
   dplyr::select(latitude, longitude, common_name, iconic_taxon_name) %>% 
-  filter(!iconic_taxon_name == "Animalia")
+  filter(!iconic_taxon_name == "Animalia") %>% 
+  mutate(park = "Death Valley National Park")
 
 death_valley_sf <- st_as_sf(death_valley,
                             coords = c("longitude", "latitude"),
@@ -58,7 +60,8 @@ death_valley_sf <- st_as_sf(death_valley,
 
 joshua_tree <- read_csv(here::here("data", "Animals", "joshua_tree.csv")) %>% 
   dplyr::select(latitude, longitude, common_name, iconic_taxon_name) %>% 
-  filter(!iconic_taxon_name %in% c("Animalia", "Plantae"))
+  filter(!iconic_taxon_name %in% c("Animalia", "Plantae")) %>% 
+  mutate(park = "Joshua Tree National Park")
 
 joshua_tree_sf <- st_as_sf(joshua_tree,
                            coords = c("longitude", "latitude"),
@@ -71,7 +74,8 @@ yosemite <- read.csv(here("data", "Animals", "yosemite.csv")) %>%
 yosemite_clean <- yosemite %>% 
   dplyr::select(longitude, latitude, common_name, iconic_taxon_name) %>% 
   mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
-  filter(iconic_taxon_name != "Animalia")
+  filter(iconic_taxon_name != "Animalia") %>% 
+  mutate(park = "Yosemite National Park")
 
 yosemite_sf <- st_as_sf(yosemite_clean, coords = c("longitude", "latitude"),
                         crs = 4326)
@@ -83,7 +87,13 @@ sequoia <- read.csv(here("data", "Animals", "sequoia.csv")) %>%
 
 sequoia_clean <- sequoia %>% 
   dplyr::select(longitude, latitude, common_name, iconic_taxon_name) %>% 
-  mutate(iconic_taxon_name = as.character(iconic_taxon_name))
+  mutate(iconic_taxon_name = as.character(iconic_taxon_name)) %>% 
+  mutate(park = "Sequoia National Park")
 
 sequoia_sf <- st_as_sf(sequoia_clean, coords = c("longitude", "latitude"),
                        crs = 4326)
+
+
+# join species observations data
+
+animal <- rbind(channel_islands_sf, death_valley_sf, yosemite_sf, sequoia_sf, joshua_tree_sf)
