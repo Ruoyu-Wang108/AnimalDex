@@ -36,34 +36,55 @@ shinyUI(
       ),
       # -------END Tab 2----------------
       
+      
+      
+      
       # -------Tab 3--------------------
       tabPanel(
         "Animals",
         
-        # map output
+        # Basemap with park outlines
         leafletOutput("basemap", width = "100%", height = 600),
         
         # ------absolute panel------------
-        # absolutePanel(id = "controls", 
-        #               class = "panel panel-default", 
-        #               fixed = TRUE,
-        #               draggable = TRUE, 
-        #               top = 60, 
-        #               left = "auto", 
-        #               right = 20, bottom = "auto",
-        #               width = 330, height = "auto",
-        #               
-        #               h2("Animals explorer"),
-        #               
-        #               selectInput("color", "Color", vars), 
-        #               # ours are not change the color but to change the filter for animal types
-        #               
-        #               selectInput("size", "Size", vars, selected = "adultpop"), 
-        #               # here we should select the specices
-        #               
-        #               conditionalPanel("input.color == 'superzip' || input.size == 'superzip'", 5)
-        #               
-        # )
+        # Might need html/css to change the background and color of this panel
+        absolutePanel(id = "controls",
+                      class = "panel panel-default",
+                      fixed = TRUE,
+                      draggable = TRUE,
+                      top = 155,
+                      left = "auto",
+                      right = 33, bottom = "auto",
+                      width = 320, height = "auto",
+                      
+
+                      h3("Animals explorer"),
+
+                      
+                      # Select the animal types
+                      radioButtons(inputId = "animal_type", 
+                                   label = "Animal Types",
+                                   choices = c(unique(park_animals$iconic_taxon_name)), 
+                                   selected = 1),
+                      
+                      # selectInput(inputId = "animal_type", 
+                      #             label = "Animal Types",
+                      #             choices = c(unique(animal$iconic_taxon_name))
+                      #             ),
+                      
+                      
+                      
+                      # select the specices
+                      selectInput(inputId = "species",
+                                  label = "Animal Specices",
+                                  choices = c("--Select--",
+                                              unique(park_animals$common_name))
+                                    ),
+                      
+                      # Not sure what this does
+                      conditionalPanel("input.animal_type == 'Ave' || input.species == 'Allen's Hummingbird")
+
+        )
         #------ END absulute panel ----------------------
         
         
