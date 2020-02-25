@@ -9,6 +9,7 @@ library(paletteer)
 library(raster)
 library(sf)
 library(tmap)
+library(leaflet)
 
 
 

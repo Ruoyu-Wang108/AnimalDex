@@ -39,12 +39,34 @@ shinyUI(
       # -------Tab 3--------------------
       tabPanel(
         "Animals",
-        sidebarPanel(
-          "Select your interested animals:, and some certain species"
-        ),
-        mainPanel(
-          "here is the map including selected animals distribution"
-        )
+        
+        # map output
+        leafletOutput("basemap", width = "100%", height = 600),
+        
+        # ------absolute panel------------
+        # absolutePanel(id = "controls", 
+        #               class = "panel panel-default", 
+        #               fixed = TRUE,
+        #               draggable = TRUE, 
+        #               top = 60, 
+        #               left = "auto", 
+        #               right = 20, bottom = "auto",
+        #               width = 330, height = "auto",
+        #               
+        #               h2("Animals explorer"),
+        #               
+        #               selectInput("color", "Color", vars), 
+        #               # ours are not change the color but to change the filter for animal types
+        #               
+        #               selectInput("size", "Size", vars, selected = "adultpop"), 
+        #               # here we should select the specices
+        #               
+        #               conditionalPanel("input.color == 'superzip' || input.size == 'superzip'", 5)
+        #               
+        # )
+        #------ END absulute panel ----------------------
+        
+        
       )
       # -------END Tab 3---------------
       
