@@ -62,16 +62,15 @@ shinyUI(
 
                       h3("Animals explorer"),
 
-                      selectInput(inputId = "park_type",
-                                  label = "Select your destination",
-                                  choices = c(unique(park_animals$unit_name))
-                                  ),
+                      # selectInput(inputId = "park_type",
+                      #             label = "Select your destination",
+                      #             choices = c(unique(park_animals$park))
+                      #             ),
                       
                       # Select the animal types
                       radioButtons(inputId = "animal_type", 
                                    label = "Animal Types",
-                                   choices = c(unique(park_animals$iconic_taxon_name)), 
-                                   selected = 1),
+                                   choices = c(unique(animal$iconic_taxon_name))),
                       
                       # selectInput(inputId = "animal_type", 
                       #             label = "Animal Types",
@@ -83,12 +82,11 @@ shinyUI(
                       # select the specices
                       selectInput(inputId = "species",
                                   label = "Animal Specices",
-                                  choices = c("--Select--",
-                                              unique(park_animals$common_name))
+                                  choices = NULL
                                     ),
                       
                       # Not sure what this does
-                      conditionalPanel("input.animal_type == 'Ave' || input.species == 'Allen's Hummingbird")
+                      #conditionalPanel("input.animal_type == 'Ave' || input.species == 'Allen's Hummingbird")
 
         )
         #------ END absulute panel ----------------------

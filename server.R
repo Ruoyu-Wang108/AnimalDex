@@ -37,6 +37,29 @@ shinyServer <- function(input, output, session) {
   
   # A reactive expression that returns the selected animal groups
   
+  # A reactive expression that returns the selected animal groups
+  
+  # park_name <- reactive ({
+  #   req(input$park_type)
+  #   if(input$park_type == "NA") {
+  #     filter(park_animals, is.na(park))
+  #   } else {
+  #     filter(park_animals, park == input$park_type)
+  #   }
+  # })
+  # 
+  # observeEvent(park_name(), {
+  #   taxon <- unique(park_name()$iconic_taxon_name)
+  #   updateSelectInput(session, "animal_type", choices = taxon)
+  # })
+
+  animals <- reactive({
+    filter(park_animals, iconic_taxon_name == input$animal_type)
+  })
+
+  observeEvent(animals(),{
+    updateSelectInput(session, "species", choices = unique(animals()$common_name))
+  })
   
   
   
