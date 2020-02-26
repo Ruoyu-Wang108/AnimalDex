@@ -49,17 +49,23 @@ shinyUI(
         # ------absolute panel------------
         # Might need html/css to change the background and color of this panel
         absolutePanel(id = "controls",
-                      class = "panel panel-default",
+                      #class = "panel panel-default",
                       fixed = TRUE,
                       draggable = TRUE,
-                      top = 155,
-                      left = "auto",
-                      right = 33, bottom = "auto",
-                      width = 320, height = "auto",
+                      top = 350,
+                      left = 40,
+                      #right = 33, 
+                      #bottom = "auto",
+                      width = 210, 
+                      #height = "auto",
                       
 
                       h3("Animals explorer"),
 
+                      selectInput(inputId = "park_type",
+                                  label = "Select your destination",
+                                  choices = c(unique(park_animals$unit_name))
+                                  ),
                       
                       # Select the animal types
                       radioButtons(inputId = "animal_type", 
