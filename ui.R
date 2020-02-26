@@ -2,6 +2,9 @@ shinyUI(
 # ----------Fluid page-----------------  
   fluidPage(
     
+    # change some style, but not sure if this is helpful...
+    tags$style(type = "text/css", "html, body {width: 100%;height:100%}"), 
+    
 # ---------Overall Title---------------
   titlePanel("AnimalDex"),
 # ---------END title-------------- ---- 

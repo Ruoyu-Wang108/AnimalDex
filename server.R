@@ -37,7 +37,7 @@ shinyServer <- function(input, output, session) {
   
   # A reactive expression that returns the selected animal groups
   
-  # A reactive expression that returns the selected animal groups
+  # unworking codes ----------------------------------------------
   
   # park_name <- reactive ({
   #   req(input$park_type)
@@ -52,7 +52,8 @@ shinyServer <- function(input, output, session) {
   #   taxon <- unique(park_name()$iconic_taxon_name)
   #   updateSelectInput(session, "animal_type", choices = taxon)
   # })
-
+  # Not working yet --------------------------------------------
+  
   animals <- reactive({
     filter(park_animals, iconic_taxon_name == input$animal_type)
   })
