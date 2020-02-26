@@ -59,10 +59,15 @@ shinyServer <- function(input, output, session) {
   })
 
   observeEvent(animals(),{
-    updateSelectInput(session, "species", choices = unique(animals()$common_name))
+    updateSelectInput(session, 
+                      "species", # inputId
+                      choices = unique(animals()$common_name))
   })
   
   
+  species <- reactive({
+    filter(animals(), common_name == input$species)
+  })
   
   
   
