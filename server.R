@@ -29,7 +29,8 @@ shinyServer <- function(input, output, session) {
   output$basemap <- renderLeaflet({
     leaflet(nps_ca_five) %>%
       addProviderTiles(providers$Stamen.Terrain) %>% 
-      addPolygons(fill = FALSE) %>% 
+      addPolygons(fill = FALSE, 
+                  popup = nps_ca_five$unit_name) %>% 
       setView(lng = -119, lat = 37.5, zoom = 5.5)
   })
   
@@ -53,11 +54,14 @@ shinyServer <- function(input, output, session) {
   #   updateSelectInput(session, "animal_type", choices = taxon)
   # })
   # Not working yet --------------------------------------------
-  
+
+  # Reactive data for animal groups  
   animals <- reactive({
     filter(park_animals, iconic_taxon_name == input$animal_type)
   })
 
+  
+  # build up choices based on previous selection
   observeEvent(animals(),{
     updateSelectInput(session, 
                       "species", # inputId
@@ -65,11 +69,18 @@ shinyServer <- function(input, output, session) {
   })
   
   
+  # Reactive data for species
   species <- reactive({
     filter(animals(), common_name == input$species)
   })
   
   
+  # observe({
+  #   #group <- animals()
+  #   
+  #   leafletProxy("basemap", data = animals()) %>% 
+  #     addMarkers(~long, ~lat, icon = ~as.character(iconic_taxon_name))
+  # })
   
   
   
