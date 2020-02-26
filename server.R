@@ -55,9 +55,14 @@ shinyServer <- function(input, output, session) {
   # })
   # Not working yet --------------------------------------------
 
+  
+  
   # Reactive data for animal groups  
   animals <- reactive({
-    filter(park_animals, iconic_taxon_name == input$animal_type)
+    park_animals %>% 
+    dplyr::select(common_name, iconic_taxon_name, park) %>% 
+    filter(iconic_taxon_name == input$animal_type) 
+    
   })
 
   
@@ -77,9 +82,9 @@ shinyServer <- function(input, output, session) {
   
   # observe({
   #   #group <- animals()
-  #   
-  #   leafletProxy("basemap", data = animals()) %>% 
-  #     addMarkers(~long, ~lat, icon = ~as.character(iconic_taxon_name))
+  # 
+  #   leafletProxy("basemap", data = animals()) %>%
+  #     addMarkers(icon = animals()$iconic_taxon_name)
   # })
   
   
