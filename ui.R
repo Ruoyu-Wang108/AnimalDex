@@ -88,6 +88,9 @@ shinyUI(
                                   choices = NULL
                                     ),
                       
+                      p("After selecting the species, click:"),
+                      
+                      actionButton("action1", "Observe", class = "btn-primary")
                       # Not sure what this does
                       #conditionalPanel("input.animal_type == 'Ave' || input.species == 'Allen's Hummingbird")
 

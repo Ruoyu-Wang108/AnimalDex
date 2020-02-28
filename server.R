@@ -59,33 +59,41 @@ shinyServer <- function(input, output, session) {
   
   # Reactive data for animal groups  
   animals <- reactive({
-    park_animals %>% 
-    dplyr::select(common_name, iconic_taxon_name, park) %>% 
+    park_animals_coords %>% 
+    #dplyr::select(common_name, iconic_taxon_name, park) %>% 
     filter(iconic_taxon_name == input$animal_type) 
     
   })
 
-  
+  # animals(), first filter result data frame
   # build up choices based on previous selection
   observeEvent(animals(),{
     updateSelectInput(session, 
                       "species", # inputId
-                      choices = unique(animals()$common_name))
+                      choices = c("--Select--",
+                                  unique(animals()$common_name)))
+    
+    leafletProxy("basemap", data = animals()) %>%
+      clearMarkerClusters() %>% 
+      addMarkers(lng = ~X, lat = ~Y, label = ~common_name, 
+                 clusterOptions = markerClusterOptions())
   })
   
   
+  # species(), second result data frame
   # Reactive data for species
   species <- reactive({
     filter(animals(), common_name == input$species)
   })
   
   
-  # observe({
-  #   #group <- animals()
-  # 
-  #   leafletProxy("basemap", data = animals()) %>%
-  #     addMarkers(icon = animals()$iconic_taxon_name)
-  # })
+  observeEvent(input$action1,{
+    
+    leafletProxy("basemap", data = species()) %>%
+      clearMarkerClusters() %>% 
+      addMarkers(lng = ~X, lat = ~Y, 
+                 clusterOptions = markerClusterOptions())
+  })
   
   
   
