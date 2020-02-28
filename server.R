@@ -95,10 +95,33 @@ shinyServer <- function(input, output, session) {
                  clusterOptions = markerClusterOptions())
   })
   
+  # TAB 2
+  # Reactive Data for parks
+  parks <- reactive ({
+    nps_ca_five %>% 
+      filter(unit_name %in% input$unit_name)
+  })
   
+  # Output ggplot map
+  # PROBLEM: Not able to filter animal points by park boundary
+  # SOLUTION: 1.) Combine BOTH nps_ca_five + park_animals AS ONE sf?
+  #           2.) Add another widget for park_animals
+  output$park_plot <- renderPlot({
+    
+    ggplot(data = parks()) +
+      geom_sf(fill = "white") +
+      geom_sf(data = park_animals,
+              aes(color = iconic_taxon_name),
+              alpha = .5)
   
+  })
   
-  
-  
-  
+  # Output ggplot histogram
+  # Problem: Doesn't work LOL and would only have total animal counts for each park
+  output$park_hist <- renderPlot({
+    
+    ggplot(data = parks()) +
+      geom_histogram(data = park_animals,
+                     aes(x = iconic_taxon_name))
+  })
 }
