@@ -31,10 +31,15 @@ shinyUI(
       tabPanel(
         "Park",
         sidebarPanel(
-          "Select your destination:, or Here is the national park pics"
+          "Select your destination:, or Here is the national park pics",
+          selectInput(input = "unit_name",
+                      label = "Choose a National Park!",
+                      choices = c(unique(nps_ca_five$unit_name)))
         ),
         mainPanel(
-          "here is the map including facilities and statistic outcomes"
+          "here is the map including facilities and statistic outcomes",
+          plotOutput(outputId = "park_plot"),
+          plotOutput(outputId = "park_hist")
         )
       ),
       # -------END Tab 2----------------
