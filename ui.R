@@ -55,7 +55,7 @@ shinyUI(
                       #class = "panel panel-default",
                       fixed = TRUE,
                       draggable = TRUE,
-                      top = 350,
+                      top = 250,
                       left = 40,
                       #right = 33, 
                       #bottom = "auto",
