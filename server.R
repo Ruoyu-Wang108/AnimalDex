@@ -28,9 +28,9 @@ shinyServer <- function(input, output, session) {
   # Create the map
   output$basemap <- renderLeaflet({
     leaflet(nps_ca_five) %>%
-      addProviderTiles(providers$Stamen.Terrain) %>% 
+      addProviderTiles(providers$Thunderforest.Outdoors) %>% 
       addPolygons(fill = FALSE, 
-                  popup = nps_ca_five$unit_name) %>% 
+                  label = nps_ca_five$unit_name) %>% 
       setView(lng = -119, lat = 37.5, zoom = 5.5)
   })
   
@@ -92,7 +92,8 @@ shinyServer <- function(input, output, session) {
     leafletProxy("basemap", data = species()) %>%
       clearMarkerClusters() %>% 
       addMarkers(lng = ~X, lat = ~Y, 
-                 clusterOptions = markerClusterOptions())
+                 clusterOptions = markerClusterOptions(),
+                 label = common_name)
   })
   
   # TAB 2

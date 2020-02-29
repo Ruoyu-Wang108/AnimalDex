@@ -104,4 +104,5 @@ park_animals <- st_join(animal, nps_ca_five, left = FALSE)
 
 # Also get the lat & long for the animal observations, lon - X, lat - Y
 park_animals_coords <- data.frame(park_animals[1:3],
-                                  sf::st_coordinates(park_animals))
+                                  sf::st_coordinates(park_animals)) %>% 
+  filter(!common_name %in% c(Birds, Mammals, Reptiles, Snakes, Amphibians, NA))
