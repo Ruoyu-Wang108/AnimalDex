@@ -32,7 +32,7 @@ shinyUI(
         "Park",
         
         # Basemap with park outlines
-        leafletOutput("basemap", width = "100%", height = 600),
+        leafletOutput("map", width = "100%", height = 600),
         
         
         # ---- Absolutate panel-----
@@ -64,7 +64,7 @@ shinyUI(
         "Animals",
         
         # Basemap with park outlines
-        #leafletOutput("basemap", width = "100%", height = 600),
+        leafletOutput("map", width = "100%", height = 600),
         
         # ------absolute panel------------
         # Might need html/css to change the background and color of this panel

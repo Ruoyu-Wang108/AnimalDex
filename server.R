@@ -130,7 +130,7 @@ shinyServer <- function(input, output, session) {
   
   observeEvent(input$action1,{
     
-    leafletProxy("basemap", data = species()) %>%
+    leafletProxy("map", data = species()) %>%
       clearMarkerClusters() %>% 
       addMarkers(lng = ~X, lat = ~Y, 
                  clusterOptions = markerClusterOptions(),
