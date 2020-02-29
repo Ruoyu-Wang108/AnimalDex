@@ -28,7 +28,12 @@ shinyServer <- function(input, output, session) {
   # Create the map
   output$basemap <- renderLeaflet({
     leaflet(nps_ca_five) %>%
-      addProviderTiles(providers$Stamen.Terrain) %>% 
+      addTiles(
+        urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4
+",
+        attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
+        options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
+      ) %>% 
       addPolygons(fill = FALSE, 
                   popup = nps_ca_five$unit_name) %>% 
       setView(lng = -119, lat = 37.5, zoom = 5.5)
