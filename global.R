@@ -100,9 +100,9 @@ sequoia_sf <- st_as_sf(sequoia_clean, coords = c("longitude", "latitude"),
 animal <- rbind(channel_islands_sf, death_valley_sf, yosemite_sf, sequoia_sf, joshua_tree_sf)
 
 # ONLY keep *animal points* inside the polygons
-park_animals <- st_join(animal, nps_ca_five, left = FALSE)
+park_animals <- st_join(animal, nps_ca_five, left = FALSE) %>% 
+  filter(!common_name %in% c("Birds", "Mammals", "Reptiles", "Snakes", "Amphibians", "NA"))
 
 # Also get the lat & long for the animal observations, lon - X, lat - Y
 park_animals_coords <- data.frame(park_animals[1:3],
-                                  sf::st_coordinates(park_animals)) %>% 
-  filter(!common_name %in% c(Birds, Mammals, Reptiles, Snakes, Amphibians, NA))
+                                  sf::st_coordinates(park_animals)) 
