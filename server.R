@@ -26,7 +26,7 @@ shinyServer <- function(input, output, session) {
   ## Interactive Map ###########################################
   
   # Create the map
-  output$basemap <- renderLeaflet({
+  output$map <- renderLeaflet({
     leaflet(nps_ca_five) %>%
       addProviderTiles(providers$Thunderforest.Outdoors) %>% 
       addTiles(
@@ -77,6 +77,7 @@ shinyServer <- function(input, output, session) {
   
   
   # Tab 3-----------------------------------------------
+  
   # A reactive expression that returns the selected animal groups
   
   # unworking codes ----------------------------------------------
@@ -96,7 +97,7 @@ shinyServer <- function(input, output, session) {
   # })
   # Not working yet --------------------------------------------
 
-  
+  # Create
   
   # Reactive data for animal groups  
   animals <- reactive({
@@ -114,7 +115,7 @@ shinyServer <- function(input, output, session) {
                       choices = c("--Select--",
                                   unique(animals()$common_name)))
     
-    leafletProxy("basemap", data = animals()) %>%
+    leafletProxy("map", data = animals()) %>%
       clearMarkerClusters() %>% 
       addMarkers(lng = ~X, lat = ~Y, label = ~common_name, 
                  clusterOptions = markerClusterOptions())

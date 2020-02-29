@@ -1,3 +1,11 @@
+animal_group <- c(
+  "Birds" = "Aves",
+  "Mammals" = "Mammalia",
+  "Reptiles" = "Reptilia",
+  "Amphibian" = "Amphibia"
+)
+
+
 shinyUI(
 # ----------Fluid page-----------------  
   fluidPage(
@@ -32,7 +40,7 @@ shinyUI(
         "Park",
         
         # Basemap with park outlines
-        leafletOutput("map", width = "100%", height = 600),
+        #leafletOutput("map", width = "100%", height = 600),
         
         
         # ---- Absolutate panel-----
@@ -90,7 +98,7 @@ shinyUI(
                       # Select the animal types
                       radioButtons(inputId = "animal_type", 
                                    label = "Animal Types",
-                                   choices = c(unique(animal$iconic_taxon_name))),
+                                   choices = animal_group),
                       
                       # selectInput(inputId = "animal_type", 
                       #             label = "Animal Types",
