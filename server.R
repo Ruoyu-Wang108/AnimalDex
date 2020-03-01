@@ -45,37 +45,39 @@ shinyServer <- function(input, output, session) {
   
   # TAB 2---------------------------------------------
   # Reactive Data for parks
+  
+  ## filter the selected park
   parks <- eventReactive(input$tab2b, {
     nps_ca_five %>% 
       filter(unit_name %in% input$unit_name)
   })
   
+  ## create the leaflet map of the selected park based on latitude and longitude boundary
    observeEvent(parks(), {
      leafletProxy("map", data = parks()) %>%
        #clearMarkerClusters() %>% 
        fitBounds(lng1 = ~long1, lng2 = ~long2, lat1 = ~parks()$lat1, lat2 = ~parks()$lat2 )
    })
 
-  animal_park_select <- data.frame(park = "--Select--",
-                                   common_taxon = "Make your selection")
+  ## count the number of animal in the selected park
   animal_park <- eventReactive(input$tab2b, {
-    
     park_animals %>% 
-      dplyr::select(park, common_taxon) %>% 
-      filter(park %in% input$unit_name) %>% 
+      dplyr::select(park, common_taxon) %>%  # narrow down the columns
+      filter(park %in% input$unit_name) %>%  # filter based on the selected park
       count(common_taxon) 
-    
   })
   
+  ## make histogram of the animals in the selected park
   output$park_hist <- renderPlot({
     
       ggplot(data = animal_park(),
-         aes(x = common_taxon, y = n)) +
-    geom_col(aes(fill = common_taxon),
+            aes(x = common_taxon, y = n)) +
+        geom_col(aes(fill = common_taxon),
              show.legend = FALSE) +
-    theme_minimal() +
-      labs(x = "Animal Types",
-           y = "How many are in your park?")
+        theme_minimal() +
+        labs(x = " ",
+           y = "How many animals are in your park?") +
+        coord_flip()
   })
 
   

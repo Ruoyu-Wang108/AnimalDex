@@ -39,16 +39,22 @@ shinyUI(
       tabPanel(
         "Park",
         fluidRow(column(4, algin = "center",
+                        # select park
                         selectInput(inputId = "unit_name", 
                                     label = "Choose a Park!",
                                     choices = c("--Select--",
                                                 unique(nps_ca_five$unit_name))),
+                        # action button
                         actionButton("tab2b", "Your Park", class = "btn-primary"),
-                        plotOutput(outputId = "park_hist")
+                        # park image
+                        # park introduction
+                        p("this is park introduction")
                         ),
                  column(8, 
+                        # interactive park map
                         leafletOutput("map", width = "100%", height = 500),
-                        p("this is park introduction")
+                        # histogram of how many animals are in the selected park 
+                        plotOutput(outputId = "park_hist")
                         )
                  )
         
