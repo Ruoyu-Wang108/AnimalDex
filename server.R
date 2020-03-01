@@ -73,7 +73,9 @@ shinyServer <- function(input, output, session) {
          aes(x = common_taxon, y = n)) +
     geom_col(aes(fill = common_taxon),
              show.legend = FALSE) +
-    theme_minimal()
+    theme_minimal() +
+      labs(x = "Animal Types",
+           y = "How many are in your park?")
   })
 
   
