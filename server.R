@@ -69,17 +69,81 @@ shinyServer <- function(input, output, session) {
       count(common_taxon) 
   })
   
+  # create hyperlink to the website of the national parks that will be used in the introduction below
+  yosemite_web <- a("office website", href="https://www.nps.gov/yose/index.htm")
+  sequoia_web <- a("office website", href="https://www.visitsequoia.com/")
+  joshua_web <- a("National Park Service Website", href="https://www.nps.gov/jotr/index.htm")
+  death_web <- a("official website", href="https://www.nps.gov/deva/index.htm")
+  channel_web <- a("official website", href = "https://www.nps.gov/chis/index.htm")
+  
+  # create output of park introduction based on chosen park
+  ## use tagList to join text with hyperlink together
+  observeEvent(input$tab2b, {
+    output$park_intro <- renderUI({
+    if(input$unit_name=="Yosemite National Park"){
+    tagList("Yosemite National Park was established after the efforts 
+             of John Muir and Robert Underwood Johnson on October 1st, 1864. Located in the western Sierra Nevada of Central California, 
+             it covers an area of about 1169 mi2 (3029 km2) and is best known for its waterfalls along with deep valleys, spectacular rock, 
+             grand meadows, giant sequoias, and peaceful lakes. With a snowy winter, pleasant spring and fall, and a hot summer, 
+             the best time to visit Yosemite varies depending on what you plan to do, from hiking to birdwatching. You can visit their ", 
+             yosemite_web, " for more information regarding campground reservations, lodging, dinning, and things to do.")
+      }
+    else
+    if(input$unit_name=="Sequoia National Park") {
+    tagList("Sequoia National Park was established on September 25, 1890 and protects 631 mi2 (1635 km2) of forested mountain at present. 
+            Located in southern Sierra Nevada of California, it contains the highest point, Mount Whitney, 
+            in the contiguous United States, which is 4421m above sea level. 
+            Sequoia National Park is known for its giant sequoia trees. 
+            General Sherman, estimated to be about 2,000 years old, is the largest single-stem tree by volume living on Earth. 
+            You can visit their ", sequoia_web, " for more information regarding campground reservations, lodging, dinning, and things to do.")
+    }
+    else
+    if(input$unit_name == "Joshua Tree National Park"){
+      tagList("Joshua Tree National Park was originally declared as a national monument in 1936 
+      but redesignated as a national park on October 31st, 1994. It is located in southeastern California, 
+      east of Los Angeles and San Bernardino. This national park includes the higher Mojave Desert and 
+      lower Colorado Desert, and encompasses a total of 1,235.4 mi2. The park was named after the 
+      Joshua Tree (Yucca brevifolia), which are fast growing trees with deep and extensive root systems that can live 
+      for hundreds of years. Although Joshua Tree National Park is located in the desert, there are many recreation 
+      activities to do such as camping, hiking, and climbing. General visitor information can be found on 
+      their official ", joshua_web, ".")
+    }
+    else
+    if(input$unit_name=="Death Valley National Park"){
+      tagList("Death Valley National Park was originally declared as a national monument in 1933 but was redesignated
+      as a national park on October 31st, 1994. Located near east of the Sierra Nevada Mountains, Death Valley is the 
+      largest national park in the contiguous United States (covering 5,270 mi2), and the hottest, driest and lowest of
+      all the national parks in the United States. With an annual rainfall of less than two inches, a record high temperature 
+      of 134°F, and 282 below sea level, animals observed here have adapted to this harsh environment. Although dangerous 
+      and extreme, there are many scenic landscapes and views. Visit the National Park Service ", death_web, 
+      " to learn more about this national park!")
+    }
+    else
+    if(input$unit_name=="Channel Islands National Park"){
+      tagList("Channel Island National Park was originally established as a national monument on April 26, 1938
+      but was redesignated as a national park on March 5th, 1980. This national park includes 5 of 8 Channel 
+      Islands located off the coast of Ventura, California. Channel Island National Park protects 388 mi2 of 
+      land and 1,252 square nautical miles of ocean off the coastlines of the islands. There are many recreational 
+      activities in this park including kayaking, scuba diving, and spearfishing available for visitors. 
+      You can visit their ", channel_web, " to reserve camping, 
+      make reservations for boat and plane transportation, and other general information.")
+    }
+    })  
+  })
+  
   ## make histogram of the animals in the selected park
   output$park_hist <- renderPlot({
     
       ggplot(data = animal_park(),
             aes(x = common_taxon, y = n)) +
-        geom_col(aes(fill = common_taxon),
-             show.legend = FALSE) +
+        geom_col(aes(color = common_taxon),
+                fill = "white",
+                show.legend = FALSE) +
         theme_minimal() +
         labs(x = " ",
-           y = "How many animals are in your park?") +
-        coord_flip()
+            y = "",
+            title = "How many animals are in the park?") 
+        #+ coord_flip()
   })
   
   ## output park image based on selected park
@@ -91,7 +155,7 @@ shinyServer <- function(input, output, session) {
     if(input$unit_name=="Joshua Tree National Park") Leg<-"www/joshua_tree.jpg"
     if(input$unit_name=="Death Valley National Park") Leg<-"www/death_valley.jpg"
     list(src=Leg,
-         width = 300)
+         width = 320)
   }, deleteFile = FALSE)  
   })
   
@@ -126,7 +190,11 @@ shinyServer <- function(input, output, session) {
   observeEvent(park_name(), {
     
     leafletProxy("map2", data = park_name()) %>%
-      fitBounds(lng1 = ~min(park_name()$long1), lng2 = ~max(park_name()$long2), lat1 = ~min(park_name()$lat1), lat2 = ~max(park_name()$lat2))
+      fitBounds(lng1 = ~min(park_name()$long1), 
+                lng2 = ~max(park_name()$long2), 
+                lat1 = ~min(park_name()$lat1), 
+                lat2 = ~max(park_name()$lat2)
+                )
   })
   
 
