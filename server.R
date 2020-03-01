@@ -59,7 +59,9 @@ shinyServer <- function(input, output, session) {
        fitBounds(lng1 = ~long1, lng2 = ~long2, lat1 = ~parks()$lat1, lat2 = ~parks()$lat2 )
    })
 
+
   ## count the number of animal in the selected park
+
   animal_park <- eventReactive(input$tab2b, {
     park_animals %>% 
       dplyr::select(park, common_taxon) %>%  # narrow down the columns
@@ -93,62 +95,48 @@ shinyServer <- function(input, output, session) {
   }, deleteFile = FALSE)  
   })
   
-  # Output ggplot map
-  # PROBLEM: Not able to filter animal points by park boundary
-  # SOLUTION: 1.) Combine BOTH nps_ca_five + park_animals AS ONE sf?
-  #           2.) Add another widget for park_animals
-  # output$park_plot <- renderPlot({
-  #   
-  #   ggplot(data = parks()) +
-  #     geom_sf(fill = "white") +
-  #     geom_sf(data = park_animals,
-  #             aes(color = iconic_taxon_name),
-  #             alpha = .5)
-  #   
-  # })
-  # 
-  # # Output ggplot histogram
-  # # Problem: Doesn't work LOL and would only have total animal counts for each park
-  # output$park_hist <- renderPlot({
-  #   
-  #   ggplot(data = parks()) +
-  #     geom_histogram(data = park_animals,
-  #                    aes(x = iconic_taxon_name))
-  # })
-  # 
   # End For tab 2---------------------------------------
   
   
   # Tab 3-----------------------------------------------
   
+  # Create the map
+  output$map2 <- renderLeaflet({
+    leaflet(nps_ca_five) %>%
+    addProviderTiles(providers$Thunderforest.Outdoors) %>%
+      addTiles(
+        urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4
+",
+        attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
+        options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
+      ) %>%
+      addPolygons(fill = FALSE, 
+                  label = nps_ca_five$park) %>% 
+      setView(lng = -119, lat = 37.5, zoom = 5.5)
+  })
   
   
   # A reactive expression that returns the selected animal groups
   
-  # unworking codes ----------------------------------------------
+  park_name <- eventReactive(input$tab2b,{
+    park_animals_coords %>% 
+    filter(park %in% input$unit_name)
+})
+
+  observeEvent(park_name(), {
+    
+    leafletProxy("map2", data = park_name()) %>%
+      fitBounds(lng1 = ~min(park_name()$long1), lng2 = ~max(park_name()$long2), lat1 = ~min(park_name()$lat1), lat2 = ~max(park_name()$lat2))
+  })
   
-  # park_name <- reactive ({
-  #   req(input$park_type)
-  #   if(input$park_type == "NA") {
-  #     filter(park_animals, is.na(park))
-  #   } else {
-  #     filter(park_animals, park == input$park_type)
-  #   }
-  # })
-  # 
-  # observeEvent(park_name(), {
-  #   taxon <- unique(park_name()$iconic_taxon_name)
-  #   updateSelectInput(session, "animal_type", choices = taxon)
-  # })
-  # Not working yet --------------------------------------------
+
 
   # Create
   
   # Reactive data for animal groups  
   animals <- reactive({
-    park_animals_coords %>% 
-    #dplyr::select(common_name, iconic_taxon_name, park) %>% 
-    filter(iconic_taxon_name == input$animal_type) 
+    
+    filter(park_name(), iconic_taxon_name == input$animal_type) 
     
   })
 
@@ -160,7 +148,7 @@ shinyServer <- function(input, output, session) {
                       choices = c("--Select--",
                                   unique(animals()$common_name)))
     
-    leafletProxy("map", data = animals()) %>%
+    leafletProxy("map2", data = animals()) %>%
       clearMarkerClusters() %>% 
       addMarkers(lng = ~X, lat = ~Y, label = ~common_name, 
                  clusterOptions = markerClusterOptions())
@@ -176,7 +164,7 @@ shinyServer <- function(input, output, session) {
   
   observeEvent(input$action1,{
     
-    leafletProxy("map", data = species()) %>%
+    leafletProxy("map2", data = species()) %>%
       clearMarkerClusters() %>% 
       addMarkers(lng = ~X, lat = ~Y, 
                  clusterOptions = markerClusterOptions(),
