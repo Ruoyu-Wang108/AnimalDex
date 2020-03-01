@@ -38,6 +38,7 @@ shinyUI(
       # -------Tab 2-------------------
       tabPanel(
         "Park",
+        
         fluidRow(column(4, algin = "center",
                         # select park
                         selectInput(inputId = "unit_name", 
@@ -50,6 +51,7 @@ shinyUI(
                         # park introduction
                         p("this is park introduction")
                         ),
+                 
                  column(8, 
                         # interactive park map
                         leafletOutput("map", width = "100%", height = 500),
@@ -57,32 +59,7 @@ shinyUI(
                         plotOutput(outputId = "park_hist")
                         )
                  )
-        
-        # Basemap with park outlines
-
-        
-       
-        # leafletOutput("map", width = "90%", height = 600),
-        
-        
-        # ---- Absolutate panel-----
-        
-        # #absolutePanel(id = "parks",
-        #               fixed = TRUE,
-        #               draggable = TRUE,
-        #               top = 350,
-        #               left = 40,
-        #               width = 210,
-        #               h3("Parks explorer"),
-        #               selectInput(inputId = "unit_name", 
-        #                           label = "Choose a Park!",
-        #                           choices = c("--Select--",
-        #                                       unique(nps_ca_five$unit_name)))
-        # )
-        # 
-        # 
-        
-        # ------------------------
+      
         
       ),
       # -------END Tab 2----------------
@@ -109,9 +86,8 @@ shinyUI(
                       #bottom = "auto",
                       width = 210, 
                       #height = "auto",
-                      
 
-                      h3("Animals explorer"),
+                      h3(img(src="move_icon.png", height = 40, width = 25),"Animals explorer"),
 
                       # selectInput(inputId = "park_type",
                       #             label = "Select your destination",
