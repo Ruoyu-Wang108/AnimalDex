@@ -115,5 +115,5 @@ park_animals <- park_animals %>%
   full_join(taxon_to_common)
 
 # Also get the lat & long for the animal observations, lon - X, lat - Y
-park_animals_coords <- data.frame(park_animals[1:3],
+park_animals_coords <- data.frame(park_animals,
                                   sf::st_coordinates(park_animals)) 
