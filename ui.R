@@ -47,7 +47,11 @@ shinyUI(
                                                 unique(nps_ca_five$unit_name))),
                         # action button
                         actionButton("tab2b", "Your Park", class = "btn-primary"),
+                        # add a break line
+                        p(" "),
+                        p(" "),
                         # park image
+                        imageOutput("park_image"),
                         # park introduction
                         p("this is park introduction")
                         ),

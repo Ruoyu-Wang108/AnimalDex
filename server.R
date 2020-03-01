@@ -79,8 +79,19 @@ shinyServer <- function(input, output, session) {
            y = "How many animals are in your park?") +
         coord_flip()
   })
-
   
+  ## output park image based on selected park
+  observeEvent(input$tab2b,{
+    output$park_image<- renderImage({
+    if(input$unit_name=="Sequoia National Park") Leg<-"www/sequoia.jpg"
+    if(input$unit_name=="Channel Islands National Park") Leg<-"www/channel_island.jpg"
+    if(input$unit_name=="Yosemite National Park") Leg<-"www/yosemite.jpg"
+    if(input$unit_name=="Joshua Tree National Park") Leg<-"www/joshua_tree.jpg"
+    if(input$unit_name=="Death Valley National Park") Leg<-"www/death_valley.jpg"
+    list(src=Leg,
+         width = 300)
+  }, deleteFile = FALSE)  
+  })
   
   # Output ggplot map
   # PROBLEM: Not able to filter animal points by park boundary
