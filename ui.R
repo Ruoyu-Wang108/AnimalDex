@@ -43,7 +43,7 @@ shinyUI(
         #leafletOutput("map", width = "100%", height = 600),
         
         
-        # ---- Absolutate panel-----
+        # ---- Absolutate panel-------------
         
         absolutePanel(id = "parks",
                       fixed = TRUE,
@@ -51,15 +51,15 @@ shinyUI(
                       top = 350,
                       left = 40,
                       width = 210,
+                      
                       h3("Parks explorer"),
+                      
                       selectInput(inputId = "unit_name", 
                                   label = "Choose a Park!",
                                   choices = c(unique(nps_ca_five$unit_name)))
+                      
         )
-        
-        
-        
-        # ------------------------
+        # ---------END Absolute Panel---------------
         
       ),
       # -------END Tab 2----------------
@@ -86,9 +86,8 @@ shinyUI(
                       #bottom = "auto",
                       width = 210, 
                       #height = "auto",
-                      
 
-                      h3("Animals explorer"),
+                      h3(img(src="move_icon.png", height = 40, width = 25),"Animals explorer"),
 
                       # selectInput(inputId = "park_type",
                       #             label = "Select your destination",
