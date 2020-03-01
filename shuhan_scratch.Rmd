@@ -150,3 +150,19 @@ ggplot(data = nps_ca_five) +
            ylim = c(35.6, 37.4))
 ```
 
+
+```{r}
+animal_park <- park_animals %>% 
+  dplyr::select(common_taxon)
+      count(common_taxon)
+    
+
+  
+park_hist <- ggplot(data = animal_park(),
+         aes(x = common_taxon, y = n)) +
+    geom_col(aes(color = common_taxon),
+             show.legend = FALSE) +
+    theme_minimal()
+
+```
+

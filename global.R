@@ -108,6 +108,12 @@ animal <- rbind(channel_islands_sf, death_valley_sf, yosemite_sf, sequoia_sf, jo
 park_animals <- st_join(animal, nps_ca_five, left = FALSE) %>% 
   filter(!common_name %in% c("Birds", "Mammals", "Reptiles", "Snakes", "Amphibians", "NA"))
 
+taxon_to_common <- data.frame(iconic_taxon_name = unique(park_animals$iconic_taxon_name),
+                              common_taxon = c("Birds", "Mammals", "Reptiles", "Amphibians"))
+
+park_animals <- park_animals %>% 
+  full_join(taxon_to_common)
+
 # Also get the lat & long for the animal observations, lon - X, lat - Y
 park_animals_coords <- data.frame(park_animals[1:3],
                                   sf::st_coordinates(park_animals)) 

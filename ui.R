@@ -2,7 +2,7 @@ animal_group <- c(
   "Birds" = "Aves",
   "Mammals" = "Mammalia",
   "Reptiles" = "Reptilia",
-  "Amphibian" = "Amphibia"
+  "Amphibians" = "Amphibia"
 )
 
 
@@ -42,7 +42,9 @@ shinyUI(
                         selectInput(inputId = "unit_name", 
                                     label = "Choose a Park!",
                                     choices = c("--Select--",
-                                                unique(nps_ca_five$unit_name)))
+                                                unique(nps_ca_five$unit_name))),
+                        actionButton("tab2b", "Your Park", class = "btn-primary"),
+                        plotOutput(outputId = "park_hist")
                         ),
                  column(8, 
                         leafletOutput("map", width = "100%", height = 500),
