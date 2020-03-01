@@ -1,4 +1,11 @@
-# Attach packages
+---
+title: "shuhan scratch"
+author: "Designed and made by Shuhan Song"
+date: "2/29/2020"
+output: html_document
+---
+
+```{r}
 library(shiny)
 library(tidyverse)
 library(kableExtra)
@@ -27,12 +34,7 @@ nps_ca <- nps %>%
 
 nps_ca_five <- nps_ca %>% 
   filter(unit_name %in% c("Death Valley National Park", "Joshua Tree National Park", "Yosemite National Park", "Channel Islands National Park", "Sequoia National Park")) %>% 
-  dplyr::select(unit_name) %>% 
-  mutate(lat1 = c(36.2 , 33.3, 37.5, 33.5, 35.6), 
-         lat2 = c(36.8 , 34.5, 38.2, 34.3, 37.4),
-         long1 = c(-119 , -120.6, -120, -116.7, -118.1),
-         long2 = c(-118.2 , -119, -119.1, -115, -116.2))
-
+  dplyr::select(unit_name)
 
 #plot(nps_ca_five)
 
@@ -111,3 +113,40 @@ park_animals <- st_join(animal, nps_ca_five, left = FALSE) %>%
 # Also get the lat & long for the animal observations, lon - X, lat - Y
 park_animals_coords <- data.frame(park_animals[1:3],
                                   sf::st_coordinates(park_animals)) 
+```
+
+```{r}
+ggplot(data = nps_ca_five) +
+  geom_sf()+
+  coord_sf(xlim = c(-120.6, -119),
+           ylim = c(33.3, 34.5))
+```
+
+```{r}
+ggplot(data = nps_ca_five) +
+  geom_sf() +
+  coord_sf(xlim = c(-119, -118.2),
+           ylim = c(36.2, 36.8))
+```
+```{r}
+ggplot(data = nps_ca_five) +
+  geom_sf() +
+  coord_sf(xlim = c(-120, -119.1),
+           ylim = c(37.5, 38.2))
+```
+
+```{r}
+ggplot(data = nps_ca_five) +
+  geom_sf() +
+  coord_sf(xlim = c(-116.7, -115),
+           ylim = c(33.5, 34.3))
+```
+
+
+```{r}
+ggplot(data = nps_ca_five) +
+  geom_sf() +
+  coord_sf(xlim = c(-118.1, -116.2),
+           ylim = c(35.6, 37.4))
+```
+

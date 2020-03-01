@@ -38,26 +38,41 @@ shinyUI(
       # -------Tab 2-------------------
       tabPanel(
         "Park",
+        fluidRow(column(4, algin = "center",
+                        selectInput(inputId = "unit_name", 
+                                    label = "Choose a Park!",
+                                    choices = c("--Select--",
+                                                unique(nps_ca_five$unit_name)))
+                        ),
+                 column(8, 
+                        leafletOutput("map", width = "100%", height = 500),
+                        p("this is park introduction")
+                        )
+                 )
         
         # Basemap with park outlines
-        #leafletOutput("map", width = "100%", height = 600),
+
+        
+       
+        # leafletOutput("map", width = "90%", height = 600),
         
         
         # ---- Absolutate panel-----
         
-        absolutePanel(id = "parks",
-                      fixed = TRUE,
-                      draggable = TRUE,
-                      top = 350,
-                      left = 40,
-                      width = 210,
-                      h3("Parks explorer"),
-                      selectInput(inputId = "unit_name", 
-                                  label = "Choose a Park!",
-                                  choices = c(unique(nps_ca_five$unit_name)))
-        )
-        
-        
+        # #absolutePanel(id = "parks",
+        #               fixed = TRUE,
+        #               draggable = TRUE,
+        #               top = 350,
+        #               left = 40,
+        #               width = 210,
+        #               h3("Parks explorer"),
+        #               selectInput(inputId = "unit_name", 
+        #                           label = "Choose a Park!",
+        #                           choices = c("--Select--",
+        #                                       unique(nps_ca_five$unit_name)))
+        # )
+        # 
+        # 
         
         # ------------------------
         
@@ -72,7 +87,7 @@ shinyUI(
         "Animals",
         
         # Basemap with park outlines
-        leafletOutput("map", width = "100%", height = 600),
+        #leafletOutput("map", width = "100%", height = 600),
         
         # ------absolute panel------------
         # Might need html/css to change the background and color of this panel
