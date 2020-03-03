@@ -25,20 +25,20 @@ shinyServer <- function(input, output, session) {
   
   ## Interactive Map ###########################################
   
-  # Create the map
-  output$map <- renderLeaflet({
-    leaflet(nps_ca_five) %>%
-      addProviderTiles(providers$Thunderforest.Outdoors) %>% 
-      addTiles(
-        urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4
-",
-        attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
-        options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
-      ) %>% 
-      addPolygons(fill = FALSE, 
-                  label = nps_ca_five$unit_name) %>% 
-      setView(lng = -119, lat = 37.5, zoom = 5.5)
-  })
+#   # Create the map
+#   output$map <- renderLeaflet({
+#     leaflet(nps_ca_five) %>%
+#       addProviderTiles(providers$Thunderforest.Outdoors) %>% 
+#       addTiles(
+#         urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4
+# ",
+#         attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
+#         options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
+#       ) %>% 
+#       addPolygons(fill = FALSE, 
+#                   label = nps_ca_five$unit_name) %>% 
+#       setView(lng = -119, lat = 37.5, zoom = 5.5)
+#   })
   
   # California, Longitude: 36.7783° N, 119.4179° W
   
@@ -51,12 +51,33 @@ shinyServer <- function(input, output, session) {
     nps_ca_five %>% 
       filter(unit_name %in% input$unit_name)
   })
+
+  animal_type <- reactive({
+    park_animals %>%
+      dplyr::select(park, common_taxon) %>% 
+      filter(park %in% input$unit_name)
+  })
   
   ## create the leaflet map of the selected park based on latitude and longitude boundary
-   observeEvent(parks(), {
-     leafletProxy("map", data = parks()) %>%
-       #clearMarkerClusters() %>% 
-       fitBounds(lng1 = ~long1, lng2 = ~long2, lat1 = ~parks()$lat1, lat2 = ~parks()$lat2 )
+  
+  
+  output$map <- renderLeaflet({
+    leaflet() %>%
+      addProviderTiles(providers$Thunderforest.Outdoors) %>% 
+      addTiles(
+        urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4",
+        attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
+        options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
+      ) %>% 
+      addPolygons(data = parks(),
+                  fill = FALSE, 
+                  label = parks()$unit_name,
+                  color = "#444444") %>% 
+      addCircleMarkers(data = animal_type(),
+                       fillColor = ~animal_type()$common_taxon,
+                       group = ~animal_type()$common_taxon,
+                       opacity = 0.5,
+                       radius = 0.5)
    })
 
 
