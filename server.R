@@ -59,7 +59,11 @@ shinyServer <- function(input, output, session) {
   })
   
   ## create the leaflet map of the selected park based on latitude and longitude boundary
+   ### Create color palette used for coloring of animal groups
   
+    pal_animal <- reactive({
+      leaflet::colorFactor(c("orange1", "turquoise3", "palevioletred1", "slateblue1"), animal_type()$common_taxon)
+    })
   
   output$map <- renderLeaflet({
     leaflet() %>%
@@ -74,10 +78,15 @@ shinyServer <- function(input, output, session) {
                   label = parks()$unit_name,
                   color = "#444444") %>% 
       addCircleMarkers(data = animal_type(),
-                       fillColor = ~animal_type()$common_taxon,
-                       group = ~animal_type()$common_taxon,
-                       opacity = 0.5,
-                       radius = 0.5)
+                       color = ~pal_animal()(common_taxon),
+                       opacity = 0.7,
+                       weight = 0.9,
+                       radius = 5)%>%
+      addLegend(data = animal_type(),
+                title = "Animal Group",
+                pal = pal_animal(), 
+                values = ~common_taxon, 
+                opacity = 1)
    })
 
 
@@ -152,6 +161,12 @@ shinyServer <- function(input, output, session) {
     })  
   })
   
+  observeEvent(input$tab2b, {
+    output$hist_title <- renderText({
+    "How many animals are in the park?"
+    })
+  })
+  
   ## make histogram of the animals in the selected park
   output$park_hist <- renderPlot({
     
@@ -162,8 +177,8 @@ shinyServer <- function(input, output, session) {
                 show.legend = FALSE) +
         theme_minimal() +
         labs(x = " ",
-            y = "",
-            title = "How many animals are in the park?") 
+             y = "") +
+        scale_color_manual(values = c("orange1", "turquoise3", "palevioletred1", "slateblue1"))
         #+ coord_flip()
   })
   

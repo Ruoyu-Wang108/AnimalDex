@@ -51,6 +51,7 @@ shinyUI(
                         p(" "),
                         p(" "),
                         # histogram of how many animals are in the selected park 
+                        textOutput("hist_title"),
                         plotOutput(outputId = "park_hist", height = 400)
                         ),
                  column(4, algin = "center",
