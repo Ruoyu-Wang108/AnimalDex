@@ -2,26 +2,7 @@
 shinyServer <- function(input, output, session) {
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+ 
   
   ## Interactive Map ###########################################
   
@@ -47,7 +28,7 @@ shinyServer <- function(input, output, session) {
   # Reactive Data for parks
   
   ## filter the selected park
-  parks <- eventReactive(input$tab2b, {
+  parks <- reactive({
     nps_ca_five %>% 
       filter(unit_name %in% input$unit_name)
   })
@@ -92,7 +73,7 @@ shinyServer <- function(input, output, session) {
 
   ## count the number of animal in the selected park
 
-  animal_park <- eventReactive(input$tab2b, {
+  animal_park <- reactive({
     park_animals %>% 
       dplyr::select(park, common_taxon) %>%  # narrow down the columns
       filter(park %in% input$unit_name) %>%  # filter based on the selected park
@@ -108,7 +89,6 @@ shinyServer <- function(input, output, session) {
   
   # create output of park introduction based on chosen park
   ## use tagList to join text with hyperlink together
-  observeEvent(input$tab2b, {
     output$park_intro <- renderUI({
     if(input$unit_name=="Yosemite National Park"){
     tagList("Yosemite National Park was established after the efforts 
@@ -159,13 +139,10 @@ shinyServer <- function(input, output, session) {
       make reservations for boat and plane transportation, and other general information.")
     }
     })  
-  })
   
-  observeEvent(input$tab2b, {
     output$hist_title <- renderText({
     "How many animals are in the park?"
     })
-  })
   
   ## make histogram of the animals in the selected park
   output$park_hist <- renderPlot({
@@ -183,7 +160,6 @@ shinyServer <- function(input, output, session) {
   })
   
   ## output park image based on selected park
-  observeEvent(input$tab2b,{
     output$park_image<- renderImage({
     if(input$unit_name=="Sequoia National Park") Leg<-"www/sequoia.jpg"
     if(input$unit_name=="Channel Islands National Park") Leg<-"www/channel_island.jpg"
@@ -193,87 +169,76 @@ shinyServer <- function(input, output, session) {
     list(src=Leg,
          width = 320)
   }, deleteFile = FALSE)  
-  })
-  
+
   # End For tab 2---------------------------------------
   
   
   # Tab 3-----------------------------------------------
   
   # Create the map
-  output$map2 <- renderLeaflet({
-    leaflet(nps_ca_five) %>%
-    addProviderTiles(providers$Thunderforest.Outdoors) %>%
-      addTiles(
-        urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4
-",
-        attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
-        options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
-      ) %>%
-      addPolygons(fill = FALSE, 
-                  label = nps_ca_five$park) %>% 
-      setView(lng = -119, lat = 37.5, zoom = 5.5)
-  })
-  
   
   # A reactive expression that returns the selected animal groups
   
-  park_name <- eventReactive(input$tab2b,{
-    park_animals_coords %>% 
-    filter(park %in% input$unit_name)
+  # animals(), first filter result data frame
+  observeEvent(input$animal_type, {  
+    
+    animals <- reactive({
+    park_animals %>% 
+      filter(park %in% input$unit_name,
+             iconic_taxon_name == input$animal_type)
+  })
+  
+  # build up choices based on previous selection
+
+    updatePickerInput(session = session, 
+                      "species", # inputId
+                      choices = c(unique(animals()$common_name))
+    )
+  })    
+ 
+  # species(), second result data frame
+  species <- reactive({
+    park_animals %>% 
+      filter(park %in% input$unit_name,
+             iconic_taxon_name %in% input$animal_type,
+             common_name %in% input$species)
+  })
+  
+  # create species color palette
+  n_species <- reactive({
+    length(input$species)
+  })
+  
+  pal_species <- reactive({
+    leaflet::colorFactor(c(rainbow(n = n_species())), species()$common_name)
+  })
+  
+  
+  # Reactive data for specie
+    output$map2 <- renderLeaflet({
+      leaflet() %>% 
+        addProviderTiles(providers$Thunderforest.Outdoors) %>% 
+        addTiles(
+          urlTemplate = "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=faa73f98b6a445298967f05e7a8908c4",
+          attribution = "&copy; <a href=\"http://www.thunderforest.com/\">Thunderforest</a>, {attribution.OpenStreetMap}",
+          options = tileOptions(variant='outdoors', apikey = 'faa73f98b6a445298967f05e7a8908c4')
+        ) %>%
+        addPolygons(data = parks(),
+                    fill = FALSE, 
+                    label = parks()$unit_name,
+                    color = "#444444") %>% 
+        addCircleMarkers(data = species(),
+                         color = ~pal_species()(common_name),
+                         opacity = 0.7,
+                         weight = 0.9,
+                         radius = 5) %>%
+        addLegend(data = species(),
+                  title = "Species",
+                  pal = pal_species(), 
+                  values = ~common_name, 
+                  opacity = 1)
 })
 
-  observeEvent(park_name(), {
-    
-    leafletProxy("map2", data = park_name()) %>%
-      fitBounds(lng1 = ~min(park_name()$long1), 
-                lng2 = ~max(park_name()$long2), 
-                lat1 = ~min(park_name()$lat1), 
-                lat2 = ~max(park_name()$lat2)
-                )
-  })
-  
-
-
-  # Create
-  
-  # Reactive data for animal groups  
-  animals <- reactive({
-    
-    filter(park_name(), iconic_taxon_name == input$animal_type) 
-    
-  })
-
-  # animals(), first filter result data frame
-  # build up choices based on previous selection
-  observeEvent(animals(),{
-    updateSelectInput(session, 
-                      "species", # inputId
-                      choices = c("--Select--",
-                                  unique(animals()$common_name)))
-    
-    leafletProxy("map2", data = animals()) %>%
-      clearMarkerClusters() %>% 
-      addMarkers(lng = ~X, lat = ~Y, label = ~common_name, 
-                 clusterOptions = markerClusterOptions())
-  })
-  
-  
-  # species(), second result data frame
-  # Reactive data for species
-  species <- reactive({
-    filter(animals(), common_name == input$species)
-  })
-  
-  
-  observeEvent(input$action1,{
-    
-    leafletProxy("map2", data = species()) %>%
-      clearMarkerClusters() %>% 
-      addMarkers(lng = ~X, lat = ~Y, 
-                 clusterOptions = markerClusterOptions(),
-                 label = species()$common_name)
-  })
   
 
 }

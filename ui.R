@@ -5,7 +5,6 @@ animal_group <- c(
   "Amphibians" = "Amphibia"
 )
 
-
 shinyUI(
 # ----------Fluid page-----------------  
   fluidPage(
@@ -50,10 +49,8 @@ shinyUI(
                         # select park
                         selectInput(inputId = "unit_name", 
                                     label = "Choose a Park!",
-                                    choices = c("--Select--",
-                                                unique(nps_ca_five$unit_name))),
-                        # action button
-                        actionButton("tab2b", "Your Park", class = "btn-primary"),
+                                    choices = c(unique(nps_ca_five$unit_name))),
+                        
                         # add a break line
                         p(" "),
                         p(" "),
@@ -86,58 +83,31 @@ shinyUI(
       tabPanel(
         "Animals",
         
-        # Basemap with park outlines
-        leafletOutput("map2", width = "100%", height = 600),
-        
-        # ------absolute panel------------
-        # Might need html/css to change the background and color of this panel
-        absolutePanel(id = "controls",
-                      #class = "panel panel-default",
-                      fixed = TRUE,
-                      draggable = TRUE,
-                      top = 250,
-                      left = 40,
-                      #right = 33, 
-                      #bottom = "auto",
-                      width = 210, 
-                      #height = "auto",
-
-                      h3(img(src="move_icon.png", height = 40, width = 25),"Animals explorer"),
-
-                      # selectInput(inputId = "park_type",
-                      #             label = "Select your destination",
-                      #             choices = c(unique(park_animals$park))
-                      #             ),
-                      
-                      # Select the animal types
-                      radioButtons(inputId = "animal_type", 
-                                   label = "Animal Types",
-                                   choices = animal_group),
-                      
-                      # selectInput(inputId = "animal_type", 
-                      #             label = "Animal Types",
-                      #             choices = c(unique(animal$iconic_taxon_name))
-                      #             ),
-                      
-                      
-                      
-                      # select the specices
-                      selectInput(inputId = "species",
-                                  label = "Animal Specices",
-                                  choices = NULL
+        fluidRow(column(3, algin = "center",
+                        # select park
+                        radioButtons(inputId = "animal_type", 
+                                     label = "Animal Types",
+                                     choices = animal_group),
+                        # add a break line
+                        p(" "),
+                        p(" "),
+                        # select the specices
+                        pickerInput(inputId = "species",
+                                    label = "Animal Specices",
+                                    choices = NULL, 
+                                    multiple = TRUE,
+                                    options = pickerOptions(
+                                      actionsBox = TRUE,
+                                      title = "Please select a species",
+                                      style = "string"
+                                    )
                                     ),
-                      
-                      p("After selecting the species, click:"),
-                      
-                      actionButton("action1", "Observe", class = "btn-primary")
-                      # Not sure what this does
-                      #conditionalPanel("input.animal_type == 'Ave' || input.species == 'Allen's Hummingbird")
-
+                        ),
+                 column(9, algin = "center",
+                        leafletOutput("map2", width = "100%", height = 600)
+                        ),
+                 )
         )
-        #------ END absulute panel ----------------------
-        
-        
-      )
       # -------END Tab 3---------------
       
       
