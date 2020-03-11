@@ -47,8 +47,9 @@ shinyUI(
         
         fluidRow(column(3, algin = "center",
                         # select park
+                        h4("Choose a Park!"),
                         selectInput(inputId = "unit_name", 
-                                    label = "Choose a Park!",
+                                    label = "",
                                     choices = c(unique(nps_ca_five$unit_name))),
                         
                         # add a break line
@@ -85,21 +86,25 @@ shinyUI(
         
         fluidRow(column(3, algin = "center",
                         # select park
+                        h4("Animal Types"),
                         radioButtons(inputId = "animal_type", 
-                                     label = "Animal Types",
+                                     label = "",
                                      choices = animal_group),
                         # add a break line
                         p(" "),
                         p(" "),
                         # select the specices
+                        h4("Animal Specices"),
                         pickerInput(inputId = "species",
-                                    label = "Animal Specices",
+                                    label = "",
                                     choices = NULL, 
                                     multiple = TRUE,
                                     options = pickerOptions(
                                       actionsBox = TRUE,
                                       title = "Please select a species",
-                                      style = "string"
+                                      style = "string",
+                                      container = "string",
+                                      dropupAuto = FALSE
                                     )
                                     ),
                         ),

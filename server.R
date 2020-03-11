@@ -210,7 +210,7 @@ shinyServer <- function(input, output, session) {
   })
   
   pal_species <- reactive({
-    leaflet::colorFactor(c(rainbow(n = n_species())), species()$common_name)
+    leaflet::colorFactor(c(rainbow(n = n_species(), s = 0.5)), species()$common_name)
   })
   
   
@@ -229,9 +229,9 @@ shinyServer <- function(input, output, session) {
                     color = "#444444") %>% 
         addCircleMarkers(data = species(),
                          color = ~pal_species()(common_name),
-                         opacity = 0.7,
-                         weight = 0.9,
-                         radius = 5) %>%
+                         opacity = 2,
+                         weight = 1,
+                         radius = 7) %>%
         addLegend(data = species(),
                   title = "Species",
                   pal = pal_species(), 
