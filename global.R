@@ -107,7 +107,17 @@ animal <- rbind(channel_islands_sf, death_valley_sf, yosemite_sf, sequoia_sf, jo
 
 # ONLY keep *animal points* inside the polygons
 park_animals <- st_join(animal, nps_ca_five, left = FALSE) %>% 
-  filter(!common_name %in% c("Birds", "Mammals", "Reptiles", "Snakes", "Amphibians", "NA"))
+  filter(!common_name %in% c("Birds", "Mammals", "Reptiles", "Snakes", "Amphibians", "NA", "Lizards", "Ensatina",
+                             "Frogs and Toads", "Rodents", "Tree Squirrels", "Typical Squirrels", "Canines", "Squamates"))
+
+# change island fox to santa cruz island fox
+park_animals$common_name[park_animals$common_name == "Island Fox"] <- "Santa Cruz Island Fox"
+
+# change western side-blotched lizard to common side-blotched lizard
+park_animals$common_name[park_animals$common_name == "Western Side-blotched Lizard"] <- "Common Side-blotched Lizard"
+
+# change western sagebrush lizard to common sagebrush lizard
+park_animals$common_name[park_animals$common_name == "Western Sagebrush Lizard"] <- "Common Sagebrush Lizard"
 
 
 
