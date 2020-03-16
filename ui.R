@@ -39,15 +39,12 @@ shinyUI(
         h4("About our team", align = "left"),
         p("AnimalDex is developed by Benson Truong, Ruoyu Wang, and Shuhan Song. We are master students at Bren School of Environmental Science and Management at the University of California, Santa Barbara. In addition to our passion on environmental data science and a lot of love for wild animals, we are thriving to take off our careers as environmental professionals."),
         fluidRow(
-          column(4, h5("Benson Truong"),
-                 p("Benson was born and raised in San Gabriel, California. In the master program, he plans to specialize in Conservation Planning with a focus in Environmental Data Science. Benson is interested in ecological restoration, especially dealing with invasive species. His dream job is to perform a mix of field work and data analyses. For fun, Benson likes to run, play basketball, and binge on youtube videos."),
-                 a("Check his blog.", href = "https://benson-gh.github.io/cayman/") ),
-          column(4, h5("Ruoyu Wang"),
-                 p("Ruoyu came from China. Her hometown Zhengzhou is close to the Shaolin Temple, but unfortunately, she knows nothing about Kung Fu. Her interests lie in energy and climate change, pollution prevention and remediation and applications of data science in environmental studies. Besides study, she is a Japanese anime nerd who also plays the piano, cooks Chinese dishes, and works hard as a kitchen manager for her co-op."),
-                 a("Check her blog.", href = "https://tender-swirles-63f9b2.netlify.com/")),
-          column(4, h5("Shuhan Song"),
-                 p("Shuhan is passionate about conservation planning and environmental management. She is seeking a career that will create and protect a more sustainable, diverse, and productive ecosystem. She loves being in the field to observe and learn no less than sitting in front of a computer to code and map. Born in Beijing, Shuhan speaks both English and Mandarin. In her free time, she enjoys drawing, hiking, visiting museums, and listening to jazz and violin solo."),
-                 a("Check her blog.", href = "https://shuhanstack.github.io/songweb/index.html"))
+          column(4, h5(a("Benson Truong", href = "https://benson-gh.github.io/cayman/")),
+                 p("Benson was born and raised in San Gabriel, California. In his master program, he plans to specialize in Conservation Planning with a focus in Environmental Data Science. Benson is interested in ecological restoration, especially dealing with invasive species. His dream job is to perform a mix of field work and data analyses. For fun, Benson likes to run, play basketball, and binge on youtube videos.")),
+          column(4, h5(a("Ruoyu Wang", href = "https://tender-swirles-63f9b2.netlify.com/")),
+                 p("Ruoyu came from China. Her hometown Zhengzhou is close to the Shaolin Temple, but unfortunately, she knows nothing about Kung Fu. Her interests lie in energy and climate change, pollution prevention and remediation and applications of data science in environmental studies. Besides study, she is a Japanese anime nerd who also plays the piano, cooks Chinese dishes, and works hard as a kitchen manager for her co-op.")),
+          column(4, h5(a("Shuhan Song", href = "https://shuhanstack.github.io/songweb/index.html")),
+                 p("Shuhan is passionate about conservation planning and environmental management. She is seeking a career that will create and protect a more sustainable, diverse, and productive ecosystem. She loves being in the field to observe and learn no less than sitting in front of a computer to code and map. Born in Beijing, Shuhan speaks both English and Mandarin. In her free time, she enjoys drawing, hiking, visiting museums, and listening to jazz and violin solo."))
           
         )
         
