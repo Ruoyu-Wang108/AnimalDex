@@ -1,0 +1,12 @@
+name: AnimalDex
+title: AnimalDex
+username:
+account: ruoyuwang
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1955082
+bundleId: 2887337
+url: https://ruoyuwang.shinyapps.io/AnimalDex/
+when: 1584381378.44025
+asMultiple: FALSE
+asStatic: FALSE
