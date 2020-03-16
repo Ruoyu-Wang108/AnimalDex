@@ -188,12 +188,12 @@ shinyServer <- function(input, output, session) {
           )
       
       
-      
       leafletProxy("map2", data = animals()) %>%
         clearMarkerClusters() %>% 
         addAwesomeMarkers(lng = ~X, lat = ~Y,
                    clusterOptions = markerClusterOptions(),
                    label = ~common_name)
+      
     })
     
     

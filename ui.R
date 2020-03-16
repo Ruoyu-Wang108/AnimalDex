@@ -1,5 +1,5 @@
 animal_group <- c(
-  #"None Selected" = "",
+  #"None Selected" = NULL,
   "Birds" = "Aves",
   "Mammals" = "Mammalia",
   "Reptiles" = "Reptilia",
