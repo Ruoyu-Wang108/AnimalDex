@@ -34,7 +34,7 @@ shinyUI(
           "website. Data of the animal observations were downloaded from the",
           a("iNaturalist Observation", href = "https://www.inaturalist.org/observations"),
           "page. Animal observations were then filtered by animal groupings and park boundaries. Interactive maps were created by the leaflet package using the",
-          a("Thunderforest Outdoors", href = "https://www.thunderforest.com/maps/outdoors/) layer."),
+          a("Thunderforest Outdoors", href = "https://www.thunderforest.com/maps/outdoors/"),
           "layer."),
         h4("About our team", align = "left"),
         p("AnimalDex is developed by Benson Truong, Ruoyu Wang, and Shuhan Song. We are master students at Bren School of Environmental Science and Management at the University of California, Santa Barbara. In addition to our passion on environmental data science and a lot of love for wild animals, we are thriving to take off our careers as environmental professionals."),
