@@ -5,8 +5,9 @@ account: ruoyuwang
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1955082
-bundleId: 2887337
+bundleId: 2887370
 url: https://ruoyuwang.shinyapps.io/AnimalDex/
-when: 1584381378.44025
+when: 1584381947.02631
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: reference_information.html|reference_information.Rmd|rmarkdown_bt.Rmd|ruo_codes.html|ruo_codes.Rmd|shuhan_scratch.html|shuhan_scratch.Rmd|Task 4_ Shiny App Outline - Google Docs.pdf
