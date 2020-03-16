@@ -202,6 +202,14 @@ shinyServer <- function(input, output, session) {
       filter(animals(), common_name %in% input$species)
     })
     
+      # create species color palette
+      n_species <- reactive({
+        length(input$species)
+      })
+
+      pal_species <- reactive({
+        leaflet::colorFactor(c(rainbow(n = n_species(), s = 0.5)), species()$common_name)
+      })
    
     # After clicking at the action botton, 
     # update the map based on users'selection on species
@@ -209,9 +217,18 @@ shinyServer <- function(input, output, session) {
       
       leafletProxy("map2", data = species()) %>%
         clearMarkerClusters() %>% 
-        addAwesomeMarkers(lng = ~X, lat = ~Y, 
-                   clusterOptions = markerClusterOptions(),
-                   label = species()$common_name)
+        addCircleMarkers(lng = ~X, lat = ~Y,
+        color = ~pal_species()(common_name),
+        opacity = 1,
+        fillOpacity = 0.7,
+        weight = 1,
+        radius = 7,
+        label = species()$common_name) %>%
+        addLegend(data = species(),
+                  title = "Species",
+                  pal = pal_species(), 
+                  values = ~common_name, 
+                  opacity = 1)
     }) 
   
   #--------------- END Tab 3---------------------------------------
