@@ -127,14 +127,13 @@ shinyServer <- function(input, output, session) {
     
       ggplot(data = animal_park(),
             aes(x = common_taxon, y = n)) +
-        geom_col(aes(color = common_taxon),
-                fill = "white",
+        geom_col(aes(fill = common_taxon),
                 show.legend = FALSE) +
         theme_minimal() +
         labs(x = " ",
              y = "") +
-        scale_color_manual(values = c("orange1", "turquoise3", "palevioletred1", "slateblue1"))
-        #+ coord_flip()
+        scale_fill_manual(values = c("orange1", "turquoise3", "palevioletred1", "slateblue1"))
+      
   })
   
   ## output park image based on selected park
@@ -148,7 +147,7 @@ shinyServer <- function(input, output, session) {
          width = 320)
   }, deleteFile = FALSE)  
 
-  # End For tab 2---------------------------------------
+  # End For tab 2--------------------------------------------------
   
   
   # Tab 3----------------------------------------------------------
@@ -174,7 +173,7 @@ shinyServer <- function(input, output, session) {
       park_animals_coords %>% 
         #dplyr::select(common_name, iconic_taxon_name, park) %>% 
         filter(park %in% input$unit_name,
-               iconic_taxon_name == input$animal_type) 
+               iconic_taxon_name %in% input$animal_type) 
       
     })
     

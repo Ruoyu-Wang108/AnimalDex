@@ -1,5 +1,5 @@
 animal_group <- c(
-  #"None selected" = "",
+  #"None Selected" = "",
   "Birds" = "Aves",
   "Mammals" = "Mammalia",
   "Reptiles" = "Reptilia",
@@ -26,19 +26,17 @@ shinyUI(
       # -----Tab 1---------------------
       tabPanel(
         "Introduction",
-        mainPanel(
-          h4("Introduction of the App:", align = "left"),
-          p("Welcome to AnimalDex! AnimalDex is an app that allows users to explore observed animals at 5 national parks: Channel Islands, Death Valley, Joshua Tree, Sequoia, and Yosemite. In the Park tab, users can select individual national parks to learn about its background information and geographic boundaries, and visualize which animal group (amphibians, birds, mammals, and reptiles) is most observed at the park. Once a park is selected, users are able to go into the Animals tab to select which animal type or species was observed at the national park. The goal of this app is to allow users to locate previous animal sightings and to increase likeliness of finding specific animals in the wild. Enjoy the app and find them all!"),
-          h4("Data Summary:", align = "left"),
-          p("Boundaries of the 5 national parks were downloaded from the",
-          a("National Park Service Open Data ArcGIS", href = "https://public-nps.opendata.arcgis.com/"), 
+        h4("Introduction of the App:", align = "left"),
+        p("Welcome to AnimalDex! AnimalDex is an app that allows users to explore observed animals at 5 national parks: Channel Islands, Death Valley, Joshua Tree, Sequoia, and Yosemite. In the Park tab, users can select individual national parks to learn about its background information and geographic boundaries, and visualize which animal group (amphibians, birds, mammals, and reptiles) is most observed at the park. Once a park is selected, users are able to go into the Animals tab to select which animal type or species was observed at the national park. The goal of this app is to allow users to locate previous animal sightings and to increase likeliness of finding specific animals in the wild. Enjoy the app and find them all!"),
+        h4("Data Summary:", align = "left"),
+        p("Boundaries of the 5 national parks were downloaded from the",
+        a("National Park Service Open Data ArcGIS", href = "https://public-nps.opendata.arcgis.com/"), 
           "website. Data of the animal observations were downloaded from the",
-          a("iNaturalist Observation", href = "https://www.inaturalist.org/observations"),
+        a("iNaturalist Observation", href = "https://www.inaturalist.org/observations"),
           "page. Animal observations were then filtered by animal groupings and park boundaries. Interactive maps were created by the leaflet package using the",
-          a("Thunderforest Outdoors", href = "https://www.thunderforest.com/maps/outdoors/) layer."),
-          "layer."
-      ),
-        )
+        a("Thunderforest Outdoors", href = "https://www.thunderforest.com/maps/outdoors/) layer."),
+          "layer.")
+        
 ),
       # ------END Tab 1----------------
       
@@ -50,7 +48,7 @@ shinyUI(
                         # select park
                         h4("Choose a Park!"),
                         selectInput(inputId = "unit_name", 
-                                    label = "",
+                                    label = NULL,
                                     choices = c(unique(nps_ca_five$unit_name))),
                         
                         # add a break line
@@ -87,18 +85,18 @@ shinyUI(
         
         fluidRow(column(3, algin = "center",
                         # select park
-                        h3("Animal Types"),
+                        h4("Animal Types"),
                         radioButtons(inputId = "animal_type", 
-                                     label = "",
+                                     label = NULL,
                                      choices = animal_group),
                         # add a break line
                         p(" "),
                         p(" "),
                       
                         # select the specices
-                        h3("Animal Specices"),
+                        h4("Animal Specices"),
                         pickerInput(inputId = "species",
-                                    label = "",
+                                    label = NULL,
                                     choices = NULL, 
                                     multiple = TRUE,
                                     options = pickerOptions(
