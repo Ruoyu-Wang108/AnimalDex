@@ -1,4 +1,5 @@
 animal_group <- c(
+  #"None selected" = "",
   "Birds" = "Aves",
   "Mammals" = "Mammalia",
   "Reptiles" = "Reptilia",
@@ -86,15 +87,16 @@ shinyUI(
         
         fluidRow(column(3, algin = "center",
                         # select park
-                        h4("Animal Types"),
+                        h3("Animal Types"),
                         radioButtons(inputId = "animal_type", 
                                      label = "",
                                      choices = animal_group),
                         # add a break line
                         p(" "),
                         p(" "),
+                      
                         # select the specices
-                        h4("Animal Specices"),
+                        h3("Animal Specices"),
                         pickerInput(inputId = "species",
                                     label = "",
                                     choices = NULL, 
@@ -106,10 +108,13 @@ shinyUI(
                                       container = "string",
                                       dropupAuto = FALSE
                                     )
-                                    ),
                         ),
+                        
+                        actionButton("action1", "Observe", class = "btn-primary")
+                        ),
+                        
                  column(9, algin = "center",
-                        leafletOutput("map2", width = "100%", height = 600)
+                        leafletOutput("map2", width = "100%", height = 500)
                         ),
                  )
         )

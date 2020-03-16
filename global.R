@@ -12,6 +12,7 @@ library(tmap)
 library(leaflet)
 library(ggplot2)
 library(shinyWidgets)
+library(devtools)
 
 
 

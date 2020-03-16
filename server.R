@@ -151,48 +151,9 @@ shinyServer <- function(input, output, session) {
   # End For tab 2---------------------------------------
   
   
-  # Tab 3-----------------------------------------------
-  
-  # Create the map
-  
-  # A reactive expression that returns the selected animal groups
-  
-  # animals(), first filter result data frame
-  observeEvent(input$animal_type, {  
-    
-    animals <- reactive({
-    park_animals %>% 
-      filter(park %in% input$unit_name,
-             iconic_taxon_name == input$animal_type)
-  })
-  
-  # build up choices based on previous selection
+  # Tab 3----------------------------------------------------------
 
-    updatePickerInput(session = session, 
-                      "species", # inputId
-                      choices = c(unique(animals()$common_name))
-    )
-  })    
- 
-  # species(), second result data frame
-  species <- reactive({
-    park_animals %>% 
-      filter(park %in% input$unit_name,
-             iconic_taxon_name %in% input$animal_type,
-             common_name %in% input$species)
-  })
-  
-  # create species color palette
-  n_species <- reactive({
-    length(input$species)
-  })
-  
-  pal_species <- reactive({
-    leaflet::colorFactor(c(rainbow(n = n_species(), s = 0.5)), species()$common_name)
-  })
-  
-  
-  # Reactive data for specie
+  # Create the interactive map for tab 3
     output$map2 <- renderLeaflet({
       leaflet() %>% 
         addProviderTiles(providers$Thunderforest.Outdoors) %>% 
@@ -204,19 +165,57 @@ shinyServer <- function(input, output, session) {
         addPolygons(data = parks(),
                     fill = FALSE, 
                     label = parks()$unit_name,
-                    color = "#444444") %>% 
-        addCircleMarkers(data = species(),
-                         color = ~pal_species()(common_name),
-                         opacity = 2,
-                         weight = 1,
-                         radius = 7) %>%
-        addLegend(data = species(),
-                  title = "Species",
-                  pal = pal_species(), 
-                  values = ~common_name, 
-                  opacity = 1)
-})
+                    color = "#444444") 
+    })
+    
+    
+    # Reactive data for animal groups  
+    animals <- reactive({
+      park_animals_coords %>% 
+        #dplyr::select(common_name, iconic_taxon_name, park) %>% 
+        filter(park %in% input$unit_name,
+               iconic_taxon_name == input$animal_type) 
+      
+    })
+    
+    # After built up the animals() dataset, 
+    # update the picker in next widget and the map with animal clusters
+    observeEvent(animals(),{
+        # build up choices based on previous selection
 
+          updatePickerInput(session = session,
+                            "species", # inputId
+                            choices = c(unique(animals()$common_name))
+          )
+      
+      
+      
+      leafletProxy("map2", data = animals()) %>%
+        clearMarkerClusters() %>% 
+        addAwesomeMarkers(lng = ~X, lat = ~Y,
+                   clusterOptions = markerClusterOptions(),
+                   label = ~common_name)
+    })
+    
+    
+    # Reactive data for species
+    species <- reactive({
+      filter(animals(), common_name %in% input$species)
+    })
+    
+   
+    # After clicking at the action botton, 
+    # update the map based on users'selection on species
+    observeEvent(input$action1,{
+      
+      leafletProxy("map2", data = species()) %>%
+        clearMarkerClusters() %>% 
+        addAwesomeMarkers(lng = ~X, lat = ~Y, 
+                   clusterOptions = markerClusterOptions(),
+                   label = species()$common_name)
+    }) 
   
+  #--------------- END Tab 3---------------------------------------
+    
 
 }
