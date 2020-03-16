@@ -96,7 +96,7 @@ shinyUI(
         
         fluidRow(column(3, algin = "center",
                         # select park
-                        h4("Animal Types"),
+                        h4("Animal Groups"),
                         radioButtons(inputId = "animal_type", 
                                      label = NULL,
                                      choices = animal_group),
@@ -104,15 +104,15 @@ shinyUI(
                         p(" "),
                         p(" "),
                       
-                        # select the specices
-                        h4("Animal Specices"),
+                        # select the species
+                        h4("Animal Species"),
                         pickerInput(inputId = "species",
                                     label = NULL,
                                     choices = NULL, 
                                     multiple = TRUE,
                                     options = pickerOptions(
                                       actionsBox = TRUE,
-                                      title = "Please select a species",
+                                      title = "Select one/many species",
                                       style = "string",
                                       container = "string",
                                       dropupAuto = FALSE
