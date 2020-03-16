@@ -191,7 +191,7 @@ shinyServer <- function(input, output, session) {
       leafletProxy("map2", data = animals()) %>%
         clearMarkerClusters() %>% 
         addAwesomeMarkers(lng = ~X, lat = ~Y,
-                   clusterOptions = markerClusterOptions(),
+                   clusterOptions = markerClusterOptions(freezeAtZoom = 8),
                    label = ~common_name)
       
     })
@@ -217,13 +217,15 @@ shinyServer <- function(input, output, session) {
       
       leafletProxy("map2", data = species()) %>%
         clearMarkerClusters() %>% 
+        clearMarkers() %>% 
+        clearControls() %>% 
         addCircleMarkers(lng = ~X, lat = ~Y,
-        color = ~pal_species()(common_name),
-        opacity = 1,
-        fillOpacity = 0.7,
-        weight = 1,
-        radius = 7,
-        label = species()$common_name) %>%
+                         color = ~pal_species()(common_name),
+                         opacity = 1,
+                         fillOpacity = 0.7,
+                         weight = 1,
+                         radius = 7,
+                         label = species()$common_name) %>%
         addLegend(data = species(),
                   title = "Species",
                   pal = pal_species(), 
