@@ -193,7 +193,7 @@ shinyServer <- function(input, output, session) {
         clearMarkers() %>% 
         clearControls() %>%
         addAwesomeMarkers(lng = ~X, lat = ~Y,
-                   clusterOptions = markerClusterOptions(freezeAtZoom = 10),
+                   clusterOptions = markerClusterOptions(freezeAtZoom = 8),
                    label = ~common_name)
       
     })
